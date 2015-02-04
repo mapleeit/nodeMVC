@@ -24,3 +24,14 @@ exports.getActionInfo = function(url, method){
 	}
 	return result;
 }
+
+exports.map = function(dict){
+	if (dict && dict.url && dict.controller) {
+		var method = dict.method ? dict.method.toLowerCase() : "get";
+		routes[method].push({
+			u: dict.url, // url匹配正则
+			c: dict.controller,
+			a: dict.action || 'index'
+		});
+	};
+}
