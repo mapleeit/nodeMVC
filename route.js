@@ -22,6 +22,10 @@ exports.getActionInfo = function(url, method){
 			break;
 		};
 	}
+
+	console.log("help");
+	console.log(result);
+
 	return result;
 }
 

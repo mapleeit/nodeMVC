@@ -29,13 +29,15 @@ exports.runServer = function(port) {
  */
 var handleRequest = function(request, response) {
 	// 通过route来获取controller和action信息
+	console.log("@@@@@");
 	var actionInfo = route.getActionInfo(request.url, request.method);
+	console.log("@@@@@");
 	//如果route中有匹配的action，则分发给对应的action
 	if (actionInfo.action) {
 		var controller = require("./controllers/" + actionInfo.controller);
 		if (controller[actionInfo.action]) {
-			var context = new controllerContext(request, response);
-			controller[actionInfo.action].apply(context, actionInfo.args);
+			var ct = new controllerContext(request, response);
+			controller[actionInfo.action].apply(ct, actionInfo.args);
 		}else {
 			handle500(request, response, 'Error: controller "' + actionInfo.controller + '" without action "' + actionInfo.action + '"');
 		}
@@ -54,8 +56,8 @@ var controllerContext = function(request, response) {
 	this.handle404 = handle404;
 	this.handle500 = handle500;
 }
-controllerContext.prototype.render = function(request, response, viewName, context) {
-	viewEngine.render(request, response, viewName, context);
+controllerContext.prototype.render = function(viewName, context) {
+	viewEngine.render(this.request, this.response, viewName, context);
 };
 controllerContext.prototype.renderJson = function(response, json) {
 	viewEngine.renderJson(response, json);

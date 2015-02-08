@@ -1,23 +1,24 @@
-/**
- * @author QLeelulu@gmail.com
- * @blog http://qleelulu.cnblogs.com
- */
+var http = require('http'),
+    events = require("events");
 
 exports.index = function(){
     this.render('blog/index.html', {msg:'Hello World'});
 };
 
 
-var http = require('http'),
-    events = require("events");
-
-var tsina_client = http.createClient(80, "api.t.sina.com.cn");
 
 //创建一个EventEmitter的实例
 var tweets_emitter = new events.EventEmitter();
 
 function get_tweets() {
-	var request = tsina_client.request("GET", "/statuses/public_timeline.json?source=3243248798", {"host": "api.t.sina.com.cn"});
+	var options = {
+		method: "GET",
+		port: 80,
+		hostname: "api.t.sina.com.cn",
+		path: "/statuses/public_timeline.json?source=3243248798"
+	}
+
+	var request = http.request(options);
 
 	request.addListener("response", function(response) {
 		var body = "";
